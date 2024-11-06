@@ -6,6 +6,8 @@ fn main() {
     println!("Part 1: {}", part1(&input));
     let input = read_to_string("quest1/inputs/input2.txt").expect("error reading input file");
     println!("Part 2: {}", part2(&input));
+    let input = read_to_string("quest1/inputs/input3.txt").expect("error reading input file");
+    println!("Part 3: {}", part3(&input));
 }
 
 fn part1(input: &str) -> u32 {
@@ -52,6 +54,34 @@ fn get_potion_cost(c: char) -> i32 {
     }
 }
 
+fn part3(input: &str) -> i32 {
+    let mut sum = 0;
+    let input = input.trim();
+
+    let mut chars = input.chars();
+
+    while let Some(c1) = chars.next() {
+        // we assert that the input always has a length divisible by 3
+        let c2 = chars.next().expect("end of input reached");
+        let c3 = chars.next().expect("end of input reached");
+
+        sum += get_potion_cost(c1);
+        sum += get_potion_cost(c2);
+        sum += get_potion_cost(c3);
+
+        let x_count = [c1, c2, c3].iter().filter(|&c| *c == 'x').count();
+
+        sum += match x_count {
+            0 => 6,
+            1 => 2,
+            2 => 0,
+            3 => 0,
+            _ => panic!("invalid x amount"),
+        }
+    }
+    sum
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -68,5 +98,12 @@ mod test {
         let test_input =
             read_to_string("inputs/test_input2.txt").expect("error reading test input file");
         assert_eq!(part2(&test_input), 28);
+    }
+
+    #[test]
+    fn part3_works() {
+        let test_input =
+            read_to_string("inputs/test_input3.txt").expect("error reading test input file");
+        assert_eq!(part3(&test_input), 30);
     }
 }
