@@ -1,0 +1,4 @@
+[workspace]
+
+members = ["quest1", "quest2"]
+resolver = "2"
